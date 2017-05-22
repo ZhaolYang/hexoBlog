@@ -74,7 +74,7 @@
 <link href="/hexoBlog/css/main.css?v=5.1.1" rel="stylesheet" type="text/css" />
 
 
-  <meta name="keywords" content="Hexo, NexT" />
+  <meta name="keywords" content="tools," />
 
 
 
@@ -91,6 +91,7 @@
 
 
 <meta name="description" content="前阵子因为一些需要想用GOOGLE查一些资料，一直用的翻墙工具蓝灯（lantern）免费流量用光了，一怒之下跟老婆申请了20大洋翻墙经费，打算自己租个vps搭梯子翻墙。由于靠百度查的教程都不够详细，而且版本比较老，踩了好多坑，所以打算自己简单写个教程，一边是自己查阅，另一边也做分享，如有错误欢迎指正。首先简单介绍一下VPS的概念，vps即Virtual Private Server，虚拟专用服务器">
+<meta name="keywords" content="tools">
 <meta property="og:type" content="article">
 <meta property="og:title" content="通过vps搭建shadowsocks实现翻墙">
 <meta property="og:url" content="http://yoursite.com/2017/05/18/通过vps搭建shadowsocks实现翻墙/index.html">
@@ -112,6 +113,8 @@
 <meta property="og:image" content="http://upload-images.jianshu.io/upload_images/3363009-2d514a75921cdd31.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
 <meta property="og:image" content="http://upload-images.jianshu.io/upload_images/3363009-0603e228b29bca3d.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
 <meta property="og:image" content="http://upload-images.jianshu.io/upload_images/3363009-c170f1a394b49267.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/3363009-0c071069a3d5f3d3.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/3363009-51803a15df83307f.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
 <meta property="og:image" content="http://upload-images.jianshu.io/upload_images/3363009-c5d1f7fd19dd9320.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
 <meta property="og:image" content="http://upload-images.jianshu.io/upload_images/3363009-a681ba671e4a7ab7.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
 <meta property="og:image" content="http://upload-images.jianshu.io/upload_images/3363009-65d29deca3eff9a6.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
@@ -123,7 +126,7 @@
 <meta property="og:image" content="http://upload-images.jianshu.io/upload_images/3363009-a79778f2eee4ff56.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
 <meta property="og:image" content="http://upload-images.jianshu.io/upload_images/3363009-24b43981e7ec9689.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
 <meta property="og:image" content="http://upload-images.jianshu.io/upload_images/3363009-1f5bf51f705576be.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
-<meta property="og:updated_time" content="2017-05-20T06:09:33.880Z">
+<meta property="og:updated_time" content="2017-05-22T08:12:59.291Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="通过vps搭建shadowsocks实现翻墙">
 <meta name="twitter:description" content="前阵子因为一些需要想用GOOGLE查一些资料，一直用的翻墙工具蓝灯（lantern）免费流量用光了，一怒之下跟老婆申请了20大洋翻墙经费，打算自己租个vps搭梯子翻墙。由于靠百度查的教程都不够详细，而且版本比较老，踩了好多坑，所以打算自己简单写个教程，一边是自己查阅，另一边也做分享，如有错误欢迎指正。首先简单介绍一下VPS的概念，vps即Virtual Private Server，虚拟专用服务器">
@@ -400,7 +403,12 @@
 <p>点击reload按钮后，vps会在几分钟内容重新安装系统，并将新的系统root密码发送到你的邮箱</p>
 <h4 id="注意，此处的密码和SSH-port后面会用到！！"><a href="#注意，此处的密码和SSH-port后面会用到！！" class="headerlink" title="注意，此处的密码和SSH port后面会用到！！"></a>注意，此处的密码和SSH port后面会用到！！</h4><p><img src="http://upload-images.jianshu.io/upload_images/3363009-c170f1a394b49267.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="Paste_Image.png"></p>
 <p>至此我们的vps购买并初始化系统完毕，进入下一步。</p>
-<h3 id="2-在PC上安装xshell工具，连接vps-在vps上搭建ss服务器端。"><a href="#2-在PC上安装xshell工具，连接vps-在vps上搭建ss服务器端。" class="headerlink" title="2.在PC上安装xshell工具，连接vps,在vps上搭建ss服务器端。"></a>2.在PC上安装xshell工具，连接vps,在vps上搭建ss服务器端。</h3><p>首先，百度 xshell ,下载xshell安装包，无脑安装即可，我用的是最新的xshell5,安装完成后运行,点击新建会话按钮</p>
+<h2 id="重大更新！！！207-5-22-另外一种更简便的方法，直接安装ss，详情请见如下（最近搬瓦工更新了一键安装ss功能，我们就能直接省去自己安装的步骤直接使用啦！）"><a href="#重大更新！！！207-5-22-另外一种更简便的方法，直接安装ss，详情请见如下（最近搬瓦工更新了一键安装ss功能，我们就能直接省去自己安装的步骤直接使用啦！）" class="headerlink" title="重大更新！！！207-5-22 另外一种更简便的方法，直接安装ss，详情请见如下（最近搬瓦工更新了一键安装ss功能，我们就能直接省去自己安装的步骤直接使用啦！）"></a>重大更新！！！207-5-22 另外一种更简便的方法，直接安装ss，详情请见如下（最近搬瓦工更新了一键安装ss功能，我们就能直接省去自己安装的步骤直接使用啦！）</h2><p>在我们购买的vps管理界面，点击shadowsocks server按钮，在对应界面中点击install按钮进行一键安装</p>
+<p><img src="http://upload-images.jianshu.io/upload_images/3363009-0c071069a3d5f3d3.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="111.png"></p>
+<p>点击start开始运行</p>
+<p><img src="http://upload-images.jianshu.io/upload_images/3363009-51803a15df83307f.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="Paste_Image.png"></p>
+<p>此处完成，可直接跳到客户端ss配置步骤！！！</p>
+<h3 id="2-在PC上安装xshell工具，连接vps-在vps上搭建ss服务器端。-该方法为自己搭建ss，推荐使用搬瓦工更新后自带的ss一键安装功能，若选择一键安装，此步骤可略过"><a href="#2-在PC上安装xshell工具，连接vps-在vps上搭建ss服务器端。-该方法为自己搭建ss，推荐使用搬瓦工更新后自带的ss一键安装功能，若选择一键安装，此步骤可略过" class="headerlink" title="2.在PC上安装xshell工具，连接vps,在vps上搭建ss服务器端。(该方法为自己搭建ss，推荐使用搬瓦工更新后自带的ss一键安装功能，若选择一键安装，此步骤可略过)"></a>2.在PC上安装xshell工具，连接vps,在vps上搭建ss服务器端。(该方法为自己搭建ss，推荐使用搬瓦工更新后自带的ss一键安装功能，若选择一键安装，此步骤可略过)</h3><p>首先，百度 xshell ,下载xshell安装包，无脑安装即可，我用的是最新的xshell5,安装完成后运行,点击新建会话按钮</p>
 <p><img src="http://upload-images.jianshu.io/upload_images/3363009-c5d1f7fd19dd9320.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="Paste_Image.png"></p>
 <p>填写连接信息，其中主机和端口号就是在vps官网的vps信息里看到的IP adress和SSH Port<br><img src="http://upload-images.jianshu.io/upload_images/3363009-a681ba671e4a7ab7.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="Paste_Image.png"></p>
 <p>填写用户身份验证信息,用户名为root，密码及上文邮件中收到的密码</p>
@@ -454,6 +462,12 @@
     </div>
 
     <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/hexoBlog/tags/tools/" rel="tag"># tools</a>
+          
+        </div>
       
 
       
@@ -566,6 +580,15 @@
           
 
           
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/hexoBlog/tags/index.html">
+                <span class="site-state-item-count">1</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
 
         </nav>
 
@@ -596,7 +619,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-花钱，买买买！"><span class="nav-number">1.</span> <span class="nav-text">1.花钱，买买买！</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#注意，此处的IP-adress和SSH-Port后面会用到！！"><span class="nav-number">1.1.</span> <span class="nav-text">注意，此处的IP adress和SSH Port后面会用到！！</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#注意，此处的密码和SSH-port后面会用到！！"><span class="nav-number">1.2.</span> <span class="nav-text">注意，此处的密码和SSH port后面会用到！！</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-在PC上安装xshell工具，连接vps-在vps上搭建ss服务器端。"><span class="nav-number">2.</span> <span class="nav-text">2.在PC上安装xshell工具，连接vps,在vps上搭建ss服务器端。</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-客户端ss配置"><span class="nav-number">3.</span> <span class="nav-text">3.客户端ss配置</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-花钱，买买买！"><span class="nav-number">1.</span> <span class="nav-text">1.花钱，买买买！</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#注意，此处的IP-adress和SSH-Port后面会用到！！"><span class="nav-number">1.1.</span> <span class="nav-text">注意，此处的IP adress和SSH Port后面会用到！！</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#注意，此处的密码和SSH-port后面会用到！！"><span class="nav-number">1.2.</span> <span class="nav-text">注意，此处的密码和SSH port后面会用到！！</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#重大更新！！！207-5-22-另外一种更简便的方法，直接安装ss，详情请见如下（最近搬瓦工更新了一键安装ss功能，我们就能直接省去自己安装的步骤直接使用啦！）"><span class="nav-number"></span> <span class="nav-text">重大更新！！！207-5-22 另外一种更简便的方法，直接安装ss，详情请见如下（最近搬瓦工更新了一键安装ss功能，我们就能直接省去自己安装的步骤直接使用啦！）</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#2-在PC上安装xshell工具，连接vps-在vps上搭建ss服务器端。-该方法为自己搭建ss，推荐使用搬瓦工更新后自带的ss一键安装功能，若选择一键安装，此步骤可略过"><span class="nav-number">1.</span> <span class="nav-text">2.在PC上安装xshell工具，连接vps,在vps上搭建ss服务器端。(该方法为自己搭建ss，推荐使用搬瓦工更新后自带的ss一键安装功能，若选择一键安装，此步骤可略过)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-客户端ss配置"><span class="nav-number">2.</span> <span class="nav-text">3.客户端ss配置</span></a></li></ol></div>
             
 
           </div>
