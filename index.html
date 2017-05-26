@@ -264,6 +264,161 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/hexoBlog/2017/05/26/简单模板引擎制作/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="赵阳">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/hexoBlog/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="官人，来玩玩儿啊~">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/hexoBlog/2017/05/26/简单模板引擎制作/" itemprop="url">简单模板引擎制作</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-05-26T22:07:44+08:00">
+                2017-05-26
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/hexoBlog/categories/js/" itemprop="url" rel="index">
+                    <span itemprop="name">js</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h3 id="什么是模板引擎？"><a href="#什么是模板引擎？" class="headerlink" title="什么是模板引擎？"></a>什么是模板引擎？</h3><p>举个例子，当我们需要渲染一段html，而这段html中包含了很多结构一样的li标签，仅仅是内容不同（内容来自渲染的数据），我们就可以把这段具有相同结构的li的html片段提取出来作为模板，需要渲染的数据用规定的语法来表示。通过一个渲染函数，将模板和需要渲染的数据作为参数传入这个函数，最终这个渲染函数返回被渲染好的html片段，然后再写入dom。</p>
+<h4 id="一个简单的示例"><a href="#一个简单的示例" class="headerlink" title="一个简单的示例"></a>一个简单的示例</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">var TemplateEngine = function(tpl, data) &#123;</div><div class="line">    // 此处为渲染函数的代码</div><div class="line">&#125;</div><div class="line">// 此处为模板，需要渲染的参数按照&lt;%name%&gt;的形式指定</div><div class="line">var template = &apos;&lt;p&gt;Hello, my name is &lt;%name%&gt;. I\&apos;m &lt;%age%&gt; years old.&lt;/p&gt;&apos;;</div><div class="line">console.log(TemplateEngine(template, &#123;</div><div class="line">    name: &quot;Krasimir&quot;,</div><div class="line">    age: 29</div><div class="line">&#125;));</div></pre></td></tr></table></figure>
+<p>以上这段函数，我们希望把传入的数据渲染到模板对应的字段，最终输出如下字符串<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">&lt;p&gt;Hello, my name is spanKrasimir. I\&apos;m 29 years old.&lt;/p&gt;</div></pre></td></tr></table></figure></p>
+<p>抛开渲染函数函数体不谈，以上就是一个简单的模板引擎的实现原理。</p>
+<h3 id="实现原理"><a href="#实现原理" class="headerlink" title="实现原理"></a>实现原理</h3><p>想要渲染函数实现我们的需求，第一个想的方法就是–正则表达式。在TemplateEngine 函数中，我们可以先定义一个正则表达式，用来匹配模板参数，也就是上文我们定义的&lt;%name%&gt;，其规则是：渲染参数被’&lt;%’和’%&gt;’包裹。那么我们的正则规则可以定义如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">var re = /&lt;%([^%&gt;]+)?%&gt;/g;</div></pre></td></tr></table></figure>
+<p>这个正则的含义如下图，即匹配以’&lt;%’和’%&gt;’包裹且内容不包含’%’或’&gt;’的内容</p>
+<p><img src="http://upload-images.jianshu.io/upload_images/3363009-c94d4f6aa9bf7db1.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="Paste_Image.png"></p>
+<p>既然有了正则，我们先使用它来匹配我们的模板看下结果，这里我们使用exec方法来进行匹配，exec方法的具体用法和介绍可参考<a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/RegExp/exec" target="_blank" rel="external">MDN</a><br>代码如下：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">var re = /&lt;%([^%&gt;]+)?%&gt;/g;</div><div class="line">var match = re.exec(tpl);</div></pre></td></tr></table></figure></p>
+<p>将match打印出来，得到的结果如图：</p>
+<p><img src="http://upload-images.jianshu.io/upload_images/3363009-8e90a663c735fc2e.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="Paste_Image.png"></p>
+<p>match[0]就是正则表达式匹配到的字符串，match[1]就是正则表达式匹配结果的第一个分组，分组的概念这里不多做介绍，可网上查看。但是这里我们又发现一个奇怪的地方，我的正则明明写的是全局匹配啊，按理来说这段模板字符串应该匹配到两个字符串啊，客观莫慌，接下来就介绍match.index这个属性，我们从第一次exec的结果可以看到，match.index=21，这个值就是匹配到第一个符合规则的字符串的索引位置，这可以说是exec方法的一个特性，如果我们想要匹配到后面的’&lt;%age%&gt;’字符串，那么我们只需要再执行一次exec方法,第二次执行会从上一次执行后的index值开始匹配，多次执行按照此规律进行，直至匹配到最后结束返回null。<br>为了匹配到所有的符合条件的模板字符串，我们将代码改成如下所示：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">var re = /&lt;%([^%&gt;]+)?%&gt;/g;</div><div class="line">var match = &apos;&apos;;</div><div class="line">while(match = re.exec(tpl))&#123;</div><div class="line">     console.log(match)</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>输出结果如图</p>
+<p><img src="http://upload-images.jianshu.io/upload_images/3363009-329acaf980b24c9e.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="Paste_Image.png"></p>
+<p>到了这里，我们就能把模板中所有符合规则的字段匹配出来了，接下来要做的就是将数据用replace替换进去，我们可以在TemplateEngine中这样写:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">var TemplateEngine = function(tpl, data) &#123;</div><div class="line">    var re = /&lt;%([^%&gt;]+)?%&gt;/g, match;</div><div class="line">    while(match = re.exec(tpl)) &#123;</div><div class="line">        tpl = tpl.replace(match[0], data[match[1]])</div><div class="line">    &#125;</div><div class="line">    return tpl;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>将模板和数据传入这个函数，返回值如下：</p>
+<p><img src="http://upload-images.jianshu.io/upload_images/3363009-6ab07d3796ab5667.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="Paste_Image.png"></p>
+<p>至此，我们已经写出了一个简单的模板引擎，当传入模板和数据时，可以返回渲染后的数据。</p>
+<h3 id="等等，还没完！"><a href="#等等，还没完！" class="headerlink" title="等等，还没完！"></a>等等，还没完！</h3><p>唉，好累，下半部分下次写，参考文章下次发，没写完我才不发呢</p>
+<p><img src="http://upload-images.jianshu.io/upload_images/3363009-22b99bce9ccdd07a.gif?imageMogr2/auto-orient/strip" alt="下次见咯"></p>
+
+          
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/hexoBlog/2017/05/20/日常工作整理的一些实用工具推荐/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -969,7 +1124,7 @@
           
             <div class="site-state-item site-state-posts">
               <a href="/hexoBlog/archives">
-                <span class="site-state-item-count">4</span>
+                <span class="site-state-item-count">5</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
@@ -980,7 +1135,7 @@
             
             <div class="site-state-item site-state-categories">
               <a href="/hexoBlog/categories/index.html">
-                <span class="site-state-item-count">2</span>
+                <span class="site-state-item-count">3</span>
                 <span class="site-state-item-name">分类</span>
               </a>
             </div>

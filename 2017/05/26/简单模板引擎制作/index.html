@@ -1,0 +1,741 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/hexoBlog/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/hexoBlog/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/hexoBlog/css/main.css?v=5.1.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Hexo, NexT" />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/hexoBlog/favicon.ico?v=5.1.1" />
+
+
+
+
+
+
+<meta name="description" content="什么是模板引擎？举个例子，当我们需要渲染一段html，而这段html中包含了很多结构一样的li标签，仅仅是内容不同（内容来自渲染的数据），我们就可以把这段具有相同结构的li的html片段提取出来作为模板，需要渲染的数据用规定的语法来表示。通过一个渲染函数，将模板和需要渲染的数据作为参数传入这个函数，最终这个渲染函数返回被渲染好的html片段，然后再写入dom。 一个简单的示例123456789va">
+<meta property="og:type" content="article">
+<meta property="og:title" content="简单模板引擎制作">
+<meta property="og:url" content="http://yoursite.com/2017/05/26/简单模板引擎制作/index.html">
+<meta property="og:site_name" content="官人，来玩玩儿啊~">
+<meta property="og:description" content="什么是模板引擎？举个例子，当我们需要渲染一段html，而这段html中包含了很多结构一样的li标签，仅仅是内容不同（内容来自渲染的数据），我们就可以把这段具有相同结构的li的html片段提取出来作为模板，需要渲染的数据用规定的语法来表示。通过一个渲染函数，将模板和需要渲染的数据作为参数传入这个函数，最终这个渲染函数返回被渲染好的html片段，然后再写入dom。 一个简单的示例123456789va">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/3363009-c94d4f6aa9bf7db1.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/3363009-8e90a663c735fc2e.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/3363009-329acaf980b24c9e.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/3363009-6ab07d3796ab5667.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/3363009-22b99bce9ccdd07a.gif?imageMogr2/auto-orient/strip">
+<meta property="og:updated_time" content="2017-05-26T14:08:16.664Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="简单模板引擎制作">
+<meta name="twitter:description" content="什么是模板引擎？举个例子，当我们需要渲染一段html，而这段html中包含了很多结构一样的li标签，仅仅是内容不同（内容来自渲染的数据），我们就可以把这段具有相同结构的li的html片段提取出来作为模板，需要渲染的数据用规定的语法来表示。通过一个渲染函数，将模板和需要渲染的数据作为参数传入这个函数，最终这个渲染函数返回被渲染好的html片段，然后再写入dom。 一个简单的示例123456789va">
+<meta name="twitter:image" content="http://upload-images.jianshu.io/upload_images/3363009-c94d4f6aa9bf7db1.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/hexoBlog/',
+    scheme: 'Pisces',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2017/05/26/简单模板引擎制作/"/>
+
+
+
+
+
+  <title>简单模板引擎制作 | 官人，来玩玩儿啊~</title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/hexoBlog/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">官人，来玩玩儿啊~</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">努力搬砖中</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/hexoBlog/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/hexoBlog/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/hexoBlog/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/hexoBlog/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/hexoBlog/2017/05/26/简单模板引擎制作/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="赵阳">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/hexoBlog/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="官人，来玩玩儿啊~">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">简单模板引擎制作</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-05-26T22:07:44+08:00">
+                2017-05-26
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/hexoBlog/categories/js/" itemprop="url" rel="index">
+                    <span itemprop="name">js</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h3 id="什么是模板引擎？"><a href="#什么是模板引擎？" class="headerlink" title="什么是模板引擎？"></a>什么是模板引擎？</h3><p>举个例子，当我们需要渲染一段html，而这段html中包含了很多结构一样的li标签，仅仅是内容不同（内容来自渲染的数据），我们就可以把这段具有相同结构的li的html片段提取出来作为模板，需要渲染的数据用规定的语法来表示。通过一个渲染函数，将模板和需要渲染的数据作为参数传入这个函数，最终这个渲染函数返回被渲染好的html片段，然后再写入dom。</p>
+<h4 id="一个简单的示例"><a href="#一个简单的示例" class="headerlink" title="一个简单的示例"></a>一个简单的示例</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">var TemplateEngine = function(tpl, data) &#123;</div><div class="line">    // 此处为渲染函数的代码</div><div class="line">&#125;</div><div class="line">// 此处为模板，需要渲染的参数按照&lt;%name%&gt;的形式指定</div><div class="line">var template = &apos;&lt;p&gt;Hello, my name is &lt;%name%&gt;. I\&apos;m &lt;%age%&gt; years old.&lt;/p&gt;&apos;;</div><div class="line">console.log(TemplateEngine(template, &#123;</div><div class="line">    name: &quot;Krasimir&quot;,</div><div class="line">    age: 29</div><div class="line">&#125;));</div></pre></td></tr></table></figure>
+<p>以上这段函数，我们希望把传入的数据渲染到模板对应的字段，最终输出如下字符串<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">&lt;p&gt;Hello, my name is spanKrasimir. I\&apos;m 29 years old.&lt;/p&gt;</div></pre></td></tr></table></figure></p>
+<p>抛开渲染函数函数体不谈，以上就是一个简单的模板引擎的实现原理。</p>
+<h3 id="实现原理"><a href="#实现原理" class="headerlink" title="实现原理"></a>实现原理</h3><p>想要渲染函数实现我们的需求，第一个想的方法就是–正则表达式。在TemplateEngine 函数中，我们可以先定义一个正则表达式，用来匹配模板参数，也就是上文我们定义的&lt;%name%&gt;，其规则是：渲染参数被’&lt;%’和’%&gt;’包裹。那么我们的正则规则可以定义如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">var re = /&lt;%([^%&gt;]+)?%&gt;/g;</div></pre></td></tr></table></figure>
+<p>这个正则的含义如下图，即匹配以’&lt;%’和’%&gt;’包裹且内容不包含’%’或’&gt;’的内容</p>
+<p><img src="http://upload-images.jianshu.io/upload_images/3363009-c94d4f6aa9bf7db1.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="Paste_Image.png"></p>
+<p>既然有了正则，我们先使用它来匹配我们的模板看下结果，这里我们使用exec方法来进行匹配，exec方法的具体用法和介绍可参考<a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/RegExp/exec" target="_blank" rel="external">MDN</a><br>代码如下：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">var re = /&lt;%([^%&gt;]+)?%&gt;/g;</div><div class="line">var match = re.exec(tpl);</div></pre></td></tr></table></figure></p>
+<p>将match打印出来，得到的结果如图：</p>
+<p><img src="http://upload-images.jianshu.io/upload_images/3363009-8e90a663c735fc2e.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="Paste_Image.png"></p>
+<p>match[0]就是正则表达式匹配到的字符串，match[1]就是正则表达式匹配结果的第一个分组，分组的概念这里不多做介绍，可网上查看。但是这里我们又发现一个奇怪的地方，我的正则明明写的是全局匹配啊，按理来说这段模板字符串应该匹配到两个字符串啊，客观莫慌，接下来就介绍match.index这个属性，我们从第一次exec的结果可以看到，match.index=21，这个值就是匹配到第一个符合规则的字符串的索引位置，这可以说是exec方法的一个特性，如果我们想要匹配到后面的’&lt;%age%&gt;’字符串，那么我们只需要再执行一次exec方法,第二次执行会从上一次执行后的index值开始匹配，多次执行按照此规律进行，直至匹配到最后结束返回null。<br>为了匹配到所有的符合条件的模板字符串，我们将代码改成如下所示：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">var re = /&lt;%([^%&gt;]+)?%&gt;/g;</div><div class="line">var match = &apos;&apos;;</div><div class="line">while(match = re.exec(tpl))&#123;</div><div class="line">     console.log(match)</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>输出结果如图</p>
+<p><img src="http://upload-images.jianshu.io/upload_images/3363009-329acaf980b24c9e.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="Paste_Image.png"></p>
+<p>到了这里，我们就能把模板中所有符合规则的字段匹配出来了，接下来要做的就是将数据用replace替换进去，我们可以在TemplateEngine中这样写:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">var TemplateEngine = function(tpl, data) &#123;</div><div class="line">    var re = /&lt;%([^%&gt;]+)?%&gt;/g, match;</div><div class="line">    while(match = re.exec(tpl)) &#123;</div><div class="line">        tpl = tpl.replace(match[0], data[match[1]])</div><div class="line">    &#125;</div><div class="line">    return tpl;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>将模板和数据传入这个函数，返回值如下：</p>
+<p><img src="http://upload-images.jianshu.io/upload_images/3363009-6ab07d3796ab5667.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="Paste_Image.png"></p>
+<p>至此，我们已经写出了一个简单的模板引擎，当传入模板和数据时，可以返回渲染后的数据。</p>
+<h3 id="等等，还没完！"><a href="#等等，还没完！" class="headerlink" title="等等，还没完！"></a>等等，还没完！</h3><p>唉，好累，下半部分下次写，参考文章下次发，没写完我才不发呢</p>
+<p><img src="http://upload-images.jianshu.io/upload_images/3363009-22b99bce9ccdd07a.gif?imageMogr2/auto-orient/strip" alt="下次见咯"></p>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+        
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/hexoBlog/2017/05/20/日常工作整理的一些实用工具推荐/" rel="next" title="日常工作整理的一些实用工具推荐">
+                <i class="fa fa-chevron-left"></i> 日常工作整理的一些实用工具推荐
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/hexoBlog/images/avatar.png"
+               alt="赵阳" />
+          <p class="site-author-name" itemprop="name">赵阳</p>
+           
+              <p class="site-description motion-element" itemprop="description">我就不信老子把这个网站的描述名字写的这么长搜索引擎会找不到！找不到我这个网页的搜索引擎不是好搜索引擎！</p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/hexoBlog/archives">
+                <span class="site-state-item-count">5</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a href="/hexoBlog/categories/index.html">
+                <span class="site-state-item-count">3</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/hexoBlog/tags/index.html">
+                <span class="site-state-item-count">1</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#什么是模板引擎？"><span class="nav-number">1.</span> <span class="nav-text">什么是模板引擎？</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#一个简单的示例"><span class="nav-number">1.1.</span> <span class="nav-text">一个简单的示例</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#实现原理"><span class="nav-number">2.</span> <span class="nav-text">实现原理</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#等等，还没完！"><span class="nav-number">3.</span> <span class="nav-text">等等，还没完！</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">赵阳</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Pisces
+  </a>
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/hexoBlog/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/hexoBlog/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/hexoBlog/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/hexoBlog/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/hexoBlog/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/hexoBlog/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/hexoBlog/js/src/utils.js?v=5.1.1"></script>
+
+  <script type="text/javascript" src="/hexoBlog/js/src/motion.js?v=5.1.1"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/hexoBlog/js/src/affix.js?v=5.1.1"></script>
+
+  <script type="text/javascript" src="/hexoBlog/js/src/schemes/pisces.js?v=5.1.1"></script>
+
+
+
+  
+  <script type="text/javascript" src="/hexoBlog/js/src/scrollspy.js?v=5.1.1"></script>
+<script type="text/javascript" src="/hexoBlog/js/src/post-details.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/hexoBlog/js/src/bootstrap.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
